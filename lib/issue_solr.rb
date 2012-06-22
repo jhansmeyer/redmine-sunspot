@@ -10,8 +10,9 @@ module IssueSolr
         text = ""
         attachments.map do |attachement| 
           if File.exists? attachement.diskfile
-            text += `java -jar '#{Rails.root}/vendor/plugins/redmine_index_attachments/java/tika-app-1.1.jar' --text '#{attachement.diskfile}'`
-            logger.error( $?.exitstatus + " #{attachement.diskfile}") unless $?.exitstatus == 0
+		command = "java -jar '#{Rails.root}/vendor/plugins/redmine_index_attachments/java/tika-app-1.1.jar' --text '#{attachement.diskfile}'"
+            text += `#{command}`
+            logger.error( command + " returns " + $?.exitstatus.to_s ) unless $?.exitstatus == 0
           end
         end
         return text
